@@ -1,0 +1,8 @@
+---
+- name: Provision web servers
+  hosts: test
+  connection: local
+  roles:
+    - esxi-guest
+    #- docker-host.yml
+    #- docker-nginx.yml

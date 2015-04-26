@@ -1,0 +1,33 @@
+---
+- include: esxi-prereqs.yml
+
+##Ensure ESXi Guest is up and running
+#For more info:
+#https://github.com/ansible/ansible-modules-core/blob/devel/cloud/vmware/vsphere_guest.py
+- name: Ensure VM Guest is Running
+  vsphere_guest:
+    guest: "{{ item }}"
+    vcenter_hostname: "{{ esxihost }}"
+    username: "{{ esxiuser }}"
+    password: "{{ esxipass }}"
+    state: powered_on
+    vm_disk:
+        disk1: 
+            size_gb: "30"
+            datastore: VMStore
+            type: thin
+    vm_hardware:
+        memory_mb: 1024
+        num_cpus: 2
+        osid: centos64Guest
+        scsi: paravirtual
+    vm_nic:
+        nic1:
+            type: e1000
+            network: VM Network
+            network_type: standard
+    esxi:
+      datacenter: ha-datacenter
+      hostname: "{{ esxihost }}"
+  with_items:
+    - "{{ inventory_hostname }}"

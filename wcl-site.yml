@@ -1,0 +1,3 @@
+---
+#Main playbook for local site
+- include: servers/web-servers.yml
