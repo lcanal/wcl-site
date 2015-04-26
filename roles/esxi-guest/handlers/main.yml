@@ -1,0 +1,12 @@
+---
+- name: Cobbler dhcpd add
+  sudo: yes
+  template:
+    src: dhcp.template.j2
+    dest: /etc/cobbler/dhcp.template
+
+- name: Cobbler sync
+  sudo: yes
+  command: cobbler sync
+  delegate_to: channel6
+

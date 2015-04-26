@@ -2,7 +2,36 @@
 - name: Provision web servers
   hosts: test
   connection: local
+  gather_facts: false
   roles:
     - esxi-guest
     #- docker-host.yml
     #- docker-nginx.yml
+
+- name: Ensure dhcp entries in Cobbler
+  hosts: dhcpd
+  remote_user: root
+  tasks:
+    - name: Gather VM Facts
+      vsphere_guest:
+        guest: "{{ item }}"
+        vcenter_hostname: "{{ esxihost }}"
+        username: "{{ esxiuser }}"
+        password: "{{ esxipass }}"
+        vmware_guest_facts: yes
+      with_items:
+        - "{{ groups['test'] }}"
+      register: vmguest_facts
+      delegate_to: localhost
+
+    # Mac Address: item.results[0].ansible_facts.hw_eth0.macaddress
+    - name: Cobbler dhcpd add
+      template:
+        src: templates/dhcp.template.j2
+        dest: /etc/cobbler/dhcp.template
+      notify:
+        - Cobbler Sync
+
+  handlers:
+    - name: Cobbler Sync
+      command: cobbler sync

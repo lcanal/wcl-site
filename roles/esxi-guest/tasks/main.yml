@@ -29,5 +29,7 @@
     esxi:
       datacenter: ha-datacenter
       hostname: "{{ esxihost }}"
+    vm_extra_config:
+        notes: Web Server VM
   with_items:
     - "{{ inventory_hostname }}"

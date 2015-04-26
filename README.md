@@ -10,3 +10,7 @@ VMWARE_USER
 VMWARE_PASS
 
 VMWARE_HOST
+
+`Preparing VM Template`
+
+See: https://lonesysadmin.net/2013/03/26/preparing-linux-template-vms/ for more details
