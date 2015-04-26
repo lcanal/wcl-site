@@ -1,16 +1,3 @@
-[directory]
-splinter.westcoastlabs.info
-
-[web]
-raphael.westcoastlabs.info
-michelangelo.westcoastlabs.info
-
-[development]
-donatello.westcoastlabs.info
-
-[shell]
-leonardo.westcoastlabs.info
-
 [test]
 slash1
 slash2
