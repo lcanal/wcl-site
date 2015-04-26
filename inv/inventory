@@ -1,6 +1,6 @@
 [test]
-slash1
-slash2
+testweb1
+testweb2
 
 [localhost]
 127.0.0.1
