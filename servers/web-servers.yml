@@ -17,7 +17,10 @@
   remote_user: root
   gather_facts: false
   tasks:
-  - include: ipa-join-task.yml
+    - name: Install IPA client
+      yum: name=ipa-client state=latest
+      delegate_to: "{{ hostvars[inventory_hostname]['wcl_ip'] }}"
+    - include: ipa-join-task.yml
 
 - name: Turn into Docker Host and Owncloud
   hosts: test
