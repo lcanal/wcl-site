@@ -1,0 +1,9 @@
+---
+- name: Cobbler Sync
+  command: cobbler sync
+
+- name: SSH Wait
+  wait_for: host="{{ hostvars[item]['wcl_ip'] }}" port=22 delay=5 timeout=1800 state=started
+  with_items:
+  - "{{ wcl_group }}"
+

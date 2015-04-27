@@ -1,0 +1,12 @@
+---
+- name: Create www path for Owncloud
+  file: path=/var/owncloudData owner=deployer group=docker state=directory mode=0775
+
+#Need api version for docker mismatch
+- name: Install Dockerized Owncloud
+  docker:
+    docker_api_version=1.15
+    image=jchaney/owncloud
+    name=owncloud
+    ports=80:80
+    volumes=/var/owncloudData:/var/www/owncloud/data

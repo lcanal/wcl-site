@@ -5,33 +5,23 @@
   gather_facts: false
   roles:
     - esxi-guest
-    #- docker-host.yml
-    #- docker-nginx.yml
 
-- name: Ensure dhcp entries in Cobbler
+- name: Cobbler dhcp entries
   hosts: dhcpd
   remote_user: root
+  roles:
+    - { role: cobbler-managed, wcl_group: "{{ groups['test'] }}" }
+
+- name: Join IPA Realm
+  hosts: test
+  remote_user: root
+  gather_facts: false
   tasks:
-    - name: Gather VM Facts
-      vsphere_guest:
-        guest: "{{ item }}"
-        vcenter_hostname: "{{ esxihost }}"
-        username: "{{ esxiuser }}"
-        password: "{{ esxipass }}"
-        vmware_guest_facts: yes
-      with_items:
-        - "{{ groups['test'] }}"
-      register: vmguest_facts
-      delegate_to: localhost
+  - include: ipa-join-task.yml
 
-    # Mac Address: item.results[0].ansible_facts.hw_eth0.macaddress
-    - name: Cobbler dhcpd add
-      template:
-        src: templates/dhcp.template.j2
-        dest: /etc/cobbler/dhcp.template
-      notify:
-        - Cobbler Sync
-
-  handlers:
-    - name: Cobbler Sync
-      command: cobbler sync
+- name: Turn into Docker Host and Owncloud
+  hosts: test
+  remote_user: root
+  roles:
+    - docker-host
+    - docker-owncloud

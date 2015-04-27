@@ -11,6 +11,6 @@ VMWARE_PASS
 
 VMWARE_HOST
 
-`Preparing VM Template`
+`Assumptions`
 
-See: https://lonesysadmin.net/2013/03/26/preparing-linux-template-vms/ for more details
+For now we'll need a working cobbler server with a default profile and root ssh-keys

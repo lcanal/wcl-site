@@ -1,0 +1,14 @@
+---
+- name : Ensure directories exist
+  file :
+    path="/opt/{{ item }}"
+    owner=deployer
+    group=docker
+    state=directory
+    mode="o=,g=rwxs,u=rwx"
+  with_items:
+    - settings
+    - webapps
+    - logs
+    - work
+

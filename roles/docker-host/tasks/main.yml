@@ -1,0 +1,28 @@
+---
+- name: Enable EPEL Repo
+  yum : name=epel-release state=latest
+
+- name: Install PIP
+  yum : name=python-pip state=latest
+
+- name: Install SELinux python bindings
+  yum : name=libselinux-python state=latest
+
+- name: Install Docker
+  yum : name=docker-io state=latest
+
+- name: Install Docker Python Module
+  pip : name=docker-py state=latest
+
+- name: Install URLLIB
+  pip : name=urllib3 state=latest
+
+- name: Install Docker Python Module
+  pip : name=docker-py state=latest
+
+- name   : Start Docker Service
+  service: name=docker state=started
+
+- include: create-users.yml
+#- include: create-directories.yml
+#- include: setup-logging.yml
