@@ -10,3 +10,10 @@
     name=owncloud
     ports=80:80
     volumes=/var/owncloudData:/var/www/owncloud/data
+
+- name: Install Dockerized Subsonic
+  docker:
+    docker_api_version=1.15
+    image=aostanin/subsonic
+    name=subsonic
+    ports=4040:4040

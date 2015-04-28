@@ -1,7 +1,7 @@
 # These are normally run locally
 - name: Ensure pysphere requirement for vsphere module
   sudo: true
-  yum: name=python-pip state=latest
+  yum: name=python-pip
 
-- pip: name=pysphere state=latest
+- pip: name=pysphere 
   sudo: true

@@ -1,6 +1,6 @@
 ---
 - name: Provision web servers
-  hosts: test
+  hosts: web
   connection: local
   gather_facts: false
   roles:
@@ -10,10 +10,10 @@
   hosts: dhcpd
   remote_user: root
   roles:
-    - { role: cobbler-managed, wcl_group: "{{ groups['test'] }}" }
+    - { role: cobbler-managed, wcl_group: "{{ groups['web'] }}" }
 
 - name: Join IPA Realm
-  hosts: test
+  hosts: web
   remote_user: root
   gather_facts: false
   tasks:
@@ -22,9 +22,9 @@
       delegate_to: "{{ hostvars[inventory_hostname]['wcl_ip'] }}"
     - include: ipa-join-task.yml
 
-- name: Turn into Docker Host and Owncloud
-  hosts: test
+- name: Turn into Docker Host 
+  hosts: web
   remote_user: root
   roles:
     - docker-host
-    - docker-owncloud
+    # - docker-owncloud

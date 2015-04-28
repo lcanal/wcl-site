@@ -3,7 +3,7 @@
   command: cobbler sync
 
 - name: SSH Wait
-  wait_for: host="{{ hostvars[item]['wcl_ip'] }}" port=22 delay=5 timeout=1800 state=started
+  local_action: wait_for host="{{ hostvars[item]['wcl_ip'] }}" port=22 delay=5 timeout=1800 state=started search_regex=OpenSSH
   with_items:
   - "{{ wcl_group }}"
 
