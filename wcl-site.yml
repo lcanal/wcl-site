@@ -2,4 +2,4 @@
 #Main playbook for local site
 #1 major assumption: We have 1 barebone vm ready to deploy cobbler to.
 #All other plays assume cobbler is installed
-- include: servers/web-servers.yml
+- include: servers/docker-nodes.yml

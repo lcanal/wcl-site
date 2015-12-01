@@ -1,10 +1,7 @@
-[test]
-testweb1  wcl_ip="10.0.0.220"
-testweb2  wcl_ip="10.0.0.221"
-
-[web]
-web1  wcl_ip="10.0.0.220"
-web2  wcl_ip="10.0.0.221"
+[dockernodes]
+dockernode1 wcl_ip="10.0.0.220"
+dockernode2 wcl_ip="10.0.0.221"
+dockernode3 wcl_ip="10.0.0.222"
 
 [localhost]
 127.0.0.1
@@ -18,3 +15,10 @@ esxipass="{{ lookup('env','VMWARE_PASS') }}"
 esxihost="{{ lookup('env','VMWARE_HOST') }}"
 ansible_ip_start=220
 ansible_ip_end=249
+
+[prod]
+michelangelo
+slash
+donatello
+leonardo
+
