@@ -7,6 +7,7 @@ This layout will start to depend on docker nodes, and treat servers as independe
 Note:
 
 Will at some point start to move to hybrid cloud infrastructure.
+Un-deployment still in process, still working on new field deployment dependency.
  
 
 `Dependant Variables`
