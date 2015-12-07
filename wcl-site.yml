@@ -1,5 +1,4 @@
 ---
-#Main playbook for local site
-#1 major assumption: We have 1 barebone vm ready to deploy cobbler to.
-#All other plays assume cobbler is installed
-- include: servers/docker-nodes.yml
+#Main playbook for cloud site
+#Assumes DigitalOcean hosted site
+- include: servers/do-nodes.yml
