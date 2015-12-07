@@ -1,3 +1,0 @@
----
-- name: Debug all ze things
-  raw: 'docker run nginx -d -p 80:80'

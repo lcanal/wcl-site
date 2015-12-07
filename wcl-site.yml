@@ -1,4 +1,16 @@
 ---
-#Main playbook for cloud site
-#Assumes DigitalOcean hosted site
-- include: servers/do-nodes.yml
+- name: Ensure active hosts are bootstrapped
+  hosts: status_active
+  gather_facts: False
+  vars_files:
+    - vars/coreosbootstrap_vars.yml
+  roles:
+    - defunctzombie.coreos-bootstrap
+
+
+- name: Ensure NGINX container is installed
+  hosts: coreos-node1
+  user: core
+  tasks:
+    - name: Run the container 
+      debug: msg="Hello"

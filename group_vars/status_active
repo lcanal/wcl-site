@@ -1,0 +1,4 @@
+---
+#This file is meant to be used with coreOS installes done with defunctzombie's coreos
+ansible_ssh_user: core
+ansible_python_interpreter: "PATH=/home/core/bin:$PATH python"

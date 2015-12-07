@@ -19,3 +19,13 @@
         size_id=512mb
         region_id=sfo1
         image_id=coreos-beta
+
+    - name: Ensure coreos-node1 is active
+      digital_ocean: >
+        state=present
+        command=droplet
+        ssh_key_ids=1585776
+        name=coreos-node1
+        size_id=512mb
+        region_id=sfo1
+        image_id=coreos-beta
