@@ -1,0 +1,6 @@
+---
+#- name: Start etcd
+#  service: name=etcd.service state=started
+
+- name: Install docker-py
+  pip: name=docker-py

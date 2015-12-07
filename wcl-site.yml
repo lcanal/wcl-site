@@ -6,11 +6,17 @@
     - vars/coreosbootstrap_vars.yml
   roles:
     - defunctzombie.coreos-bootstrap
+    - wcl-bootstrap
 
 
-- name: Ensure NGINX container is installed
-  hosts: coreos-node1
-  user: core
+- name: Ensure NGINX is installed
+  hosts: status_active
   tasks:
-    - name: Run the container 
-      debug: msg="Hello"
+    - name: NGINX
+      docker:
+        name: nginx
+        image: nginx
+        state: reloaded
+        pull: missing
+        ports:
+          - "80:80"
