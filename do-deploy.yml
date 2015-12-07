@@ -1,0 +1,44 @@
+---
+- name: Check DigitalOcean Nodes
+  hosts: localhost
+  gather_facts: no
+  vars:
+    cloudconfig: "{{ lookup('file', 'files/coreos_cloudconfig.yml') }}"
+  tasks:
+    - name: Ensure bigpun key Exists
+      digital_ocean: >
+        state=present
+        command=ssh
+        name=lcanal@BigPun
+        ssh_pub_key="{{ lookup('file', 'files/bigpun.pub') }}"
+      register: bigpun
+
+    - name: Ensure donatello key Exists
+      digital_ocean: >
+        state=present
+        command=ssh
+        name=lcanal@donatello
+        ssh_pub_key="{{ lookup('file', 'files/donatello.pub') }}"
+      register: donatello
+
+    - name: Ensure coreos-head is active
+      digital_ocean: >
+        state=present
+        command=droplet
+        name=coreos-head
+        size_id=512mb
+        region_id=sfo1
+        image_id=coreos-beta
+        ssh_key_ids="{{ donatello.ssh_key.id }},{{ bigpun.ssh_key.id }}"
+        user_data="{{ cloudconfig }}"
+
+    - name: Ensure coreos-node1 is active
+      digital_ocean: >
+        state=present
+        command=droplet
+        name=coreos-node1
+        size_id=512mb
+        region_id=sfo1
+        image_id=coreos-beta
+        ssh_key_ids="{{ donatello.ssh_key.id }},{{ bigpun.ssh_key.id }}"
+        user_data="{{ cloudconfig }}"

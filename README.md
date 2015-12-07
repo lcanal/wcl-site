@@ -1,35 +1,19 @@
 # wcl-site
 WestCoastLabs Infrastructure Layout and Ansible Scripts
 
-This layout will start to depend on docker nodes, and treat servers as independent nodes to use at will. Will gradually start to move infrastructure at home to a container based infra.
+Infrastructure will be based on DigitalOcean backed CoreOS hosts that will have docker installed. If doing a completely greenfield install, use do-provision.yml in order to create the necessary droplets. 
 
 
-Note:
+Dependencies
+==============
 
-Will at some point start to move to hybrid cloud infrastructure.
-Un-deployment still in process, still working on new field deployment dependency.
- 
+Environment Variables
+---------------------
 
-`Dependant Variables`
+DO_API_TOKEN | Token in order to access DigitalOcean API
 
-Environment Variables:
+Packages
+-------
 
-VMWARE_USER
-
-VMWARE_PASS
-
-VMWARE_HOST
-
-`Assumptions`
-
-For now we'll need a working cobbler server with a default profile and root ssh-keys
-
-===
-Cobbler
-
-Make sure cobbler has a mounted DVD on its filesystem via the command:
-
-'mount -t iso9660 -o loop,ro /var/ISOs/CentOS-6.6-x86_64-bin-DVD1.iso /mnt/CentOS6.6/'
-
-
-and that you have a system pxeimage labeled 'default'
+ - Tested on dopy version 3.5
+ - ansible  stable-2.0

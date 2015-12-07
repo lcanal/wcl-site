@@ -1,4 +1,0 @@
----
-esxiuser: "{{ lookup('env','VMWARE_USER') }}"
-esxipass: "{{ lookup('env','VMWARE_PASS') }}"
-esxihost: "{{ lookup('env','VMWARE_HOST') }}"

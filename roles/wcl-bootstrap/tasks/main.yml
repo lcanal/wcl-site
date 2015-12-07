@@ -1,0 +1,11 @@
+---
+- name: Start etcd
+  become: yes
+  service: name=etcd2.service state=started
+
+- name: Start fleet
+  become: yes
+  service: name=fleet.service state=started
+
+- name: Install docker-py
+  pip: name=docker-py
