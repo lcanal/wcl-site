@@ -1,4 +1,8 @@
 ---
+# Incorporate do-deploy into main site
+
+- include: do-deploy.yml
+
 - name: Ensure active hosts are bootstrapped
   hosts: status_active
   gather_facts: False
@@ -6,17 +10,5 @@
     - vars/coreosbootstrap_vars.yml
   roles:
     - defunctzombie.coreos-bootstrap
-    - wcl-bootstrap
 
 
-- name: Ensure NGINX is installed
-  hosts: status_active
-  tasks:
-    - name: NGINX
-      docker:
-        name: nginx
-        image: nginx
-        state: reloaded
-        pull: missing
-        ports:
-          - "80:80"

@@ -26,6 +26,7 @@
         image_id=coreos-beta
         unique_name=yes
         private_networking=yes
+        wait=yes
         ssh_key_ids="{{ keys.results[0].ssh_key.id }},{{ keys.results[1].ssh_key.id }}"
         user_data="{{ cloudconfig }}"
       with_items:
