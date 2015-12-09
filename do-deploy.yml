@@ -5,40 +5,38 @@
   vars:
     cloudconfig: "{{ lookup('file', 'files/coreos_cloudconfig.yml') }}"
   tasks:
-    - name: Ensure bigpun key Exists
+    - name: Ensure SSH Keys Exist
       digital_ocean: >
         state=present
         command=ssh
-        name=lcanal@BigPun
-        ssh_pub_key="{{ lookup('file', 'files/bigpun.pub') }}"
-      register: bigpun
+        name={{ item.name }}
+        ssh_pub_key="{{ lookup('file', '{{ item.file }}') }}"
+      register: keys
+      with_items:
+        - { name: 'lcanal@BigPun'   , file: 'files/bigpun.pub', register_name: 'bigpun' }
+        - { name: 'lcanal@donatello', file: 'files/donatello.pub', register_name: 'donatello' }
 
-    - name: Ensure donatello key Exists
-      digital_ocean: >
-        state=present
-        command=ssh
-        name=lcanal@donatello
-        ssh_pub_key="{{ lookup('file', 'files/donatello.pub') }}"
-      register: donatello
-
-    - name: Ensure coreos-head is active
+    - name: Ensure coreos-nodes are active
       digital_ocean: >
         state=present
         command=droplet
-        name=coreos-head
+        name={{ item }}
         size_id=512mb
         region_id=sfo1
         image_id=coreos-beta
-        ssh_key_ids="{{ donatello.ssh_key.id }},{{ bigpun.ssh_key.id }}"
+        unique_name=yes
+        ssh_key_ids="{{ keys.results[0].ssh_key.id }},{{ keys.results[1].ssh_key.id }}"
         user_data="{{ cloudconfig }}"
+      with_items:
+        - coreos-node1
+        - coreos-node2
+      register: droplets
 
-    - name: Ensure coreos-node1 is active
-      digital_ocean: >
-        state=present
-        command=droplet
-        name=coreos-node1
-        size_id=512mb
-        region_id=sfo1
-        image_id=coreos-beta
-        ssh_key_ids="{{ donatello.ssh_key.id }},{{ bigpun.ssh_key.id }}"
-        user_data="{{ cloudconfig }}"
+    - debug: var=droplets
+
+  #  - name: Ensure Node DNS names are active
+#      digital_ocean_domain: >
+#        state=present
+#        name={{ item.droplet.name }}.my.domain
+#        ip={{ item.droplet.ip_address }}
+#      with_items: droplets.results

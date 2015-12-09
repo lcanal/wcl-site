@@ -1,0 +1,16 @@
+---
+- name: Check DigitalOcean Nodes
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Remove CoreOS nodes
+      digital_ocean: >
+        state=deleted
+        command=droplet
+        name={{ item }}
+        size_id=512mb
+        region_id=sfo1
+        image_id=coreos-beta
+      with_items:
+        - coreos-head
+        - coreos-node1
