@@ -32,13 +32,5 @@
       with_items:
         - coreos-node1
         - coreos-node2
+        - coreos-node3
       register: droplets
-
-    #- debug: var=droplets
-
-   # - name: Ensure Node DNS names are active
-   #    digital_ocean_domain: >
-   #      state=present
-   #      name={{ item.droplet.name }}.my.domain
-   #      ip={{ item.droplet.ip_address }}
-   #    with_items: droplets.results
