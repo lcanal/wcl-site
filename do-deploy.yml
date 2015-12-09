@@ -25,6 +25,7 @@
         region_id=sfo1
         image_id=coreos-beta
         unique_name=yes
+        private_networking=yes
         ssh_key_ids="{{ keys.results[0].ssh_key.id }},{{ keys.results[1].ssh_key.id }}"
         user_data="{{ cloudconfig }}"
       with_items:
@@ -32,11 +33,11 @@
         - coreos-node2
       register: droplets
 
-    - debug: var=droplets
+    #- debug: var=droplets
 
-  #  - name: Ensure Node DNS names are active
-#      digital_ocean_domain: >
-#        state=present
-#        name={{ item.droplet.name }}.my.domain
-#        ip={{ item.droplet.ip_address }}
-#      with_items: droplets.results
+   # - name: Ensure Node DNS names are active
+   #    digital_ocean_domain: >
+   #      state=present
+   #      name={{ item.droplet.name }}.my.domain
+   #      ip={{ item.droplet.ip_address }}
+   #    with_items: droplets.results
