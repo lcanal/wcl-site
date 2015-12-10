@@ -32,5 +32,4 @@
       with_items:
         - coreos-node1
         - coreos-node2
-        - coreos-node3
       register: droplets
