@@ -4,14 +4,18 @@ coreos:
   etcd2:
     # generate a new token for each unique cluster from https://discovery.etcd.io/new?size=3
     # specify the initial size of your cluster with ?size=X
-    discovery: 
-    # multi-region and multi-cloud deployments need to use $public_ipv4
-    advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
-    initial-advertise-peer-urls: http://$private_ipv4:2380
-    # listen on both the official ports and the legacy ports
-    # legacy ports can be omitted if your application doesn't depend on them
-    listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
-    listen-peer-urls: http://$private_ipv4:2380
+    discovery:
+    # multi-region deployments, multi-cloud deployments, and Droplets without
+    # private networking need to use $public_ipv4:
+    advertise-client-urls: https://$private_ipv4:2379,https://$private_ipv4:4001
+    initial-advertise-peer-urls: https://$private_ipv4:2380
+    # listen on the official ports 2379, 2380 and one legacy port 4001:
+    listen-client-urls: https://0.0.0.0:2379,https://0.0.0.0:4001
+    listen-peer-urls: https://$private_ipv4:2380
+  fleet:
+    # fleet defaults to plain HTTP - explicitly tell it to use HTTPS on port 4001:
+    etcd_servers: https://$private_ipv4:4001
+    public-ip: $private_ipv4   # used for fleetctl ssh command
   units:
     - name: etcd2.service
       command: start
@@ -24,3 +28,26 @@ coreos:
             [Service]
             ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{ "Network": "10.1.0.0/16" }'
       command: start
+
+write_files:
+  # tell etcd2 and fleet where our certificates are going to live:
+  - path: /run/systemd/system/etcd2.service.d/30-certificates.conf
+    permissions: 0644
+    content: |
+      [Service]
+      # client environment variables
+      Environment=ETCD_CA_FILE=/home/core/ca.pem
+      Environment=ETCD_CERT_FILE=/home/core/coreos.pem
+      Environment=ETCD_KEY_FILE=/home/core/coreos-key.pem
+      # peer environment variables
+      Environment=ETCD_PEER_CA_FILE=/home/core/ca.pem
+      Environment=ETCD_PEER_CERT_FILE=/home/core/coreos.pem
+      Environment=ETCD_PEER_KEY_FILE=/home/core/coreos-key.pem
+  - path: /run/systemd/system/fleet.service.d/30-certificates.conf
+    permissions: 0644
+    content: |
+      [Service]
+      # client auth certs
+      Environment=FLEET_ETCD_CAFILE=/home/core/ca.pem
+      Environment=FLEET_ETCD_CERTFILE=/home/core/coreos.pem
+      Environment=FLEET_ETCD_KEYFILE=/home/core/coreos-key.pem
